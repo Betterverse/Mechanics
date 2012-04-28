@@ -1,0 +1,4 @@
+name: Mechanics
+main: com.bukkit.gemo.FalseBook.Core.FalseBookCore
+version: 0.1
+authors: [Betterverse]
