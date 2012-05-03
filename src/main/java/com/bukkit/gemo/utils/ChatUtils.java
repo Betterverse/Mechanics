@@ -18,7 +18,7 @@ public class ChatUtils
 
   public static void printLine(Player player, ChatColor color, String message)
   {
-    printLine(player, color, message);
+    printInfo(player, "Mechanics", color, message);
   }
 
   public static void printInfo(CommandSender sender, String pluginName, ChatColor color, String message)

@@ -1,10 +1,8 @@
 package com.bukkit.gemo.FalseBook.Block.World;
 
 import com.bukkit.gemo.FalseBook.Block.FalseBookBlockCore;
-import com.bukkit.gemo.FalseBook.Block.Mechanics.BlockMechanicHandler;
 import com.bukkit.gemo.FalseBook.Block.QueuedExecutionEvent;
 import com.bukkit.gemo.FalseBook.Mechanics.MechanicListener;
-import com.bukkit.gemo.FalseBook.Settings.WorldSettings;
 import com.bukkit.gemo.FalseBook.Values.ValueIntegerList;
 import com.bukkit.gemo.FalseBook.World.FBWorld;
 import com.bukkit.gemo.utils.FlatFile;
@@ -15,9 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Server;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -29,7 +25,6 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.scheduler.BukkitScheduler;
 
 public class FBWorldBlock extends FBWorld
   implements Runnable
@@ -59,10 +54,10 @@ public class FBWorldBlock extends FBWorld
 
   public boolean loadSettings()
   {
-    File baseFolder = new File("plugins" + System.getProperty("file.separator") + "FalseBook");
+    File baseFolder = new File("plugins" + System.getProperty("file.separator") + "Mechanics");
     baseFolder.mkdirs();
 
-    File worldFolder = new File("plugins" + System.getProperty("file.separator") + "FalseBook" + System.getProperty("file.separator") + getWorldName());
+    File worldFolder = new File("plugins" + System.getProperty("file.separator") + "Mechanics" + System.getProperty("file.separator") + getWorldName());
     worldFolder.mkdirs();
 
     File oldFile = new File(baseFolder, FileName);
@@ -71,7 +66,7 @@ public class FBWorldBlock extends FBWorld
     try
     {
       initSettings();
-      FlatFile config = new FlatFile("plugins" + System.getProperty("file.separator") + "FalseBook" + System.getProperty("file.separator") + getWorldName() + System.getProperty("file.separator") + FileName, false);
+      FlatFile config = new FlatFile("plugins" + System.getProperty("file.separator") + "Mechanics" + System.getProperty("file.separator") + getWorldName() + System.getProperty("file.separator") + FileName, false);
       if (config.readFile())
       {
         getSettings().addBoolean(EnumSettings.BRIDGE_ENABLED.getName(), config.getBoolean(EnumSettings.BRIDGE_ENABLED.getName(), true));
@@ -107,21 +102,21 @@ public class FBWorldBlock extends FBWorld
 
         getSettings().addDouble(EnumSettings.APPLE_DROP_CHANCE.getName(), config.getFloat(EnumSettings.APPLE_DROP_CHANCE.getName(), 10.0F));
 
-        saveSettings(new File("plugins/FalseBook" + System.getProperty("file.separator") + getWorldName()), FileName);
+        saveSettings(new File("plugins/Mechanics" + System.getProperty("file.separator") + getWorldName()), FileName);
       } else {
-        saveSettings(new File("plugins/FalseBook" + System.getProperty("file.separator") + getWorldName()), FileName);
+        saveSettings(new File("plugins/Mechanics" + System.getProperty("file.separator") + getWorldName()), FileName);
       }
       return true;
     } catch (Exception e) {
-      FalseBookBlockCore.printInConsole("Error while reading file: plugins/FalseBook/" + getWorldName() + "/" + FileName);
+      FalseBookBlockCore.printInConsole("Error while reading file: plugins/Mechanics/" + getWorldName() + "/" + FileName);
       try {
-        FlatFile config = new FlatFile("plugins" + System.getProperty("file.separator") + "FalseBook" + System.getProperty("file.separator") + getWorldName() + System.getProperty("file.separator") + FileName, false);
-        config.regenerateFile("FalseBook" + System.getProperty("file.separator") + getWorldName() + System.getProperty("file.separator") + FileName);
-        saveSettings(new File("FalseBook" + System.getProperty("file.separator") + getWorldName()), getWorldName());
+        FlatFile config = new FlatFile("plugins" + System.getProperty("file.separator") + "Mechanics" + System.getProperty("file.separator") + getWorldName() + System.getProperty("file.separator") + FileName, false);
+        config.regenerateFile("Mechanics" + System.getProperty("file.separator") + getWorldName() + System.getProperty("file.separator") + FileName);
+        saveSettings(new File("Mechanics" + System.getProperty("file.separator") + getWorldName()), getWorldName());
       } catch (Exception e1) {
         e1.printStackTrace();
       }
-      FalseBookBlockCore.printInConsole("regenerated file: plugins/FalseBook/" + getWorldName() + "/" + FileName);
+      FalseBookBlockCore.printInConsole("regenerated file: plugins/Mechanics/" + getWorldName() + "/" + FileName);
     }return true;
   }
 
