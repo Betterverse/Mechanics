@@ -1,4 +1,4 @@
 name: Mechanics
-main: com.bukkit.gemo.FalseBook.Core.FalseBookCore
+main: net.betterverse.mechanics.Mechanics
 version: 0.1
 authors: [Betterverse]
