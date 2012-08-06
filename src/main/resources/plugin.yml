@@ -1,4 +1,12 @@
 name: Mechanics
 main: net.betterverse.mechanics.Mechanics
-version: 0.1
+version: 1.0
 authors: [Betterverse]
+permissions:
+  mechanics.*:
+    default: op
+    children:
+      mechanics.bridge: true
+      mechanics.door: true
+      mechanics.gate: true
+      mechanics.lift: true
