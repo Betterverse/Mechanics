@@ -4,22 +4,21 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.material.Sign;
 
-public class Bridge extends Mechanic {
+public class Door extends Mechanic {
 
-    public Bridge() {
-        super("Bridge");
+    public Door() {
+        super("Door");
     }
 
     @Override
     public boolean canCreate(Player player) {
-        return player.hasPermission("mechanics.bridge");
+        return player.hasPermission("mechanics.door");
     }
 
     @Override
@@ -30,48 +29,47 @@ public class Bridge extends Mechanic {
     @Override
     public void activate(Player player, Block block) {
         BlockFace toCheck = ((Sign) block.getState().getData()).getAttachedFace();
-        block = block.getRelative(BlockFace.DOWN).getRelative(BlockFace.DOWN);
-        block = block.getRelative(toCheck);
+        Block against = block.getRelative(toCheck).getRelative(BlockFace.DOWN);
         for (BlockFace posi : pos) {
             if (posi == toCheck && posi.getOppositeFace() == toCheck) {
                 continue;
             }
-            Set<Block> entirePart = getStart(block.getRelative(posi), posi);
+            Set<Block> entirePart = getStart(against, posi);
             for (Block st : entirePart) {
-                switchStart(st, posi);
+                switchStart(st);
             }
         }
-        player.sendMessage(ChatColor.GREEN + "Switched bridge!");
     }
 
     @Override
     public String getName() {
-        return "Bridge";
+        return "Door";
     }
 
-    private Set<Block> getStart(Block relative, BlockFace posi) {
+    private Set<Block> getStart(Block against, BlockFace posi) {
         Set<Block> toRet = new HashSet<Block>();
-        Material orig = relative.getType();
-        while (relative.getType() == orig) {
-            toRet.add(relative);
-            relative = relative.getRelative(posi);
+        Material orig = against.getType();
+        while (against.getType() == orig) {
+            toRet.add(against);
+            against = against.getRelative(posi);
         }
         return toRet;
     }
 
-    private void switchStart(Block st, BlockFace posi) {
-        boolean create = st.getRelative(posi).getType() == Material.AIR;
-        Material toSet = st.getType();
-        st = st.getRelative(posi);
+    private void switchStart(Block st) {
+        boolean create = st.getRelative(BlockFace.UP).getType() == Material.AIR;
+        Material orig = st.getType();
         if (create) {
+            st = st.getRelative(BlockFace.UP);
             while (st.getType() == Material.AIR) {
-                st.setType(toSet);
-                st = st.getRelative(posi);
+                st.setType(orig);
+                st = st.getRelative(BlockFace.UP);
             }
         } else {
-            while (st.getType() == toSet) {
+            st = st.getRelative(BlockFace.UP);
+            while (st.getType() == orig) {
                 st.setType(Material.AIR);
-                st = st.getRelative(posi);
+                st = st.getRelative(BlockFace.UP);
             }
         }
     }
